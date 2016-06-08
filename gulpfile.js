@@ -9,6 +9,7 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     notify = require('gulp-notify'),
     cache = require('gulp-cache'),
+    concat = require('gulp-concat'),
     livereload = require('gulp-livereload'),
     sourcemaps = require('gulp-sourcemaps'),
 
@@ -35,6 +36,7 @@ gulp.task('styles', () =>
             includeContent: false,
             sourceRoot: 'src'
         }))
+    .pipe(concat('style.css'))
     .pipe(gulp.dest('dist/styles'))
     .pipe(rename({ suffix: '.min' }))
     .pipe(minifycss())
@@ -46,8 +48,10 @@ gulp.task('styles', () =>
 // Scripts
 gulp.task('scripts', function() {
     return gulp.src('src/scripts/**/*.js')
+    	.pipe(concat('script.js'))
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
+        
         .pipe(gulp.dest('dist/scripts'))
         .pipe(rename({ suffix: '.min' }))
         .pipe(uglify())
