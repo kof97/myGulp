@@ -13,6 +13,11 @@ var gulp = require('gulp'),
     livereload = require('gulp-livereload'),
     sourcemaps = require('gulp-sourcemaps'),
 
+    browserify = require("browserify"),
+    sourcemaps = require("gulp-sourcemaps"),
+    source = require('vinyl-source-stream'),
+    buffer = require('vinyl-buffer'),
+
     del = require('del');
 
 // Styles
@@ -47,8 +52,18 @@ gulp.task('styles', () =>
 
 // Scripts
 gulp.task('scripts', function() {
-    return gulp.src('src/scripts/**/*.js')
-    	.pipe(concat('script.js'))
+    var b = browserify({
+        entries: "src/scripts/main.js",
+        debug: true
+    });
+
+    return b.bundle()
+        .pipe(source("script.js"))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true}))
+        .pipe(sourcemaps.write("."))
+        .pipe(gulp.dest("dist/scripts"));
+/*
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
         
@@ -57,6 +72,7 @@ gulp.task('scripts', function() {
         .pipe(uglify())
         .pipe(gulp.dest('dist/scripts'))
         .pipe(notify({ message: 'Scripts task complete' }));
+*/
 });
 
 // Images

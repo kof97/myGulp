@@ -1,4 +1,1 @@
-
-
-
-alert(132);
+module.exports = "aya";

@@ -1,10 +1,3 @@
-var k = 1;
+var name = require("./name");
 
-function kof(k) {
-	console.log(k);
-}
-
-
-var kk = 123;
-
-kof(kk);
+console.log("Hello! " + name);
